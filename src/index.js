@@ -1,4 +1,6 @@
 const { ApolloServer } = require("apollo-server");
+const fs = require("fs");
+const path = require("path");
 
 let links = [
   {
@@ -21,6 +23,7 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
+  typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
   resolvers,
 });
 
