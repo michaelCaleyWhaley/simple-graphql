@@ -10,6 +10,8 @@ let links = [
   },
 ];
 
+let idCount = links.length;
+
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
@@ -19,6 +21,25 @@ const resolvers = {
     id: (parent) => parent.id,
     description: (parent) => parent.description,
     url: (parent) => parent.url,
+  },
+  Mutation: {
+    post: (parent, args) => {
+      const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url,
+      };
+      links.push(link);
+      return link;
+    },
+    updateLink: (parent, args) => {
+      const linkIndex = links.findIndex((link) => link.id === args.id);
+      links[linkIndex].description = args.description;
+      links[linkIndex].url = args.url;
+      return links[linkIndex];
+      // if (!selectedLink) return;
+      // return selectedLink;
+    },
   },
 };
 
