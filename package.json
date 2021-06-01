@@ -11,11 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^2.24.0",
     "apollo-server": "^2.24.1",
     "graphql": "^15.5.0"
   },
   "devDependencies": {
     "eslint": "^7.15.0",
-    "eslint-plugin-react": "^7.21.5"
+    "eslint-plugin-react": "^7.21.5",
+    "prisma": "^2.24.0"
   }
 }
