@@ -12,6 +12,10 @@ let links = [
 
 let idCount = links.length;
 
+const findLinkIndex = (links, argId) => {
+  return links.findIndex((link) => link.id === argId);
+};
+
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
@@ -33,12 +37,17 @@ const resolvers = {
       return link;
     },
     updateLink: (parent, args) => {
-      const linkIndex = links.findIndex((link) => link.id === args.id);
-      links[linkIndex].description = args.description;
-      links[linkIndex].url = args.url;
+      const { id, description, url } = args;
+      const linkIndex = findLinkIndex(links, id);
+      if (linkIndex === -1) return;
+      links[linkIndex] = { ...links[linkIndex], url, description };
       return links[linkIndex];
-      // if (!selectedLink) return;
-      // return selectedLink;
+    },
+    deleteLink: (parent, args) => {
+      const { id } = args;
+      const linkIndex = findLinkIndex(links, id);
+      if (linkIndex === -1) return;
+      return links.splice(linkIndex, 1)[0];
     },
   },
 };
