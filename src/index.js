@@ -13,7 +13,9 @@ let links = [
 let idCount = links.length;
 
 const findLinkIndex = (links, argId) => {
-  return links.findIndex((link) => link.id === argId);
+  const index = links.findIndex((link) => link.id === argId);
+  if (index === -1) return false;
+  return index;
 };
 
 const resolvers = {
@@ -39,14 +41,14 @@ const resolvers = {
     updateLink: (parent, args) => {
       const { id, description, url } = args;
       const linkIndex = findLinkIndex(links, id);
-      if (linkIndex === -1) return;
+      if (!linkIndex) return;
       links[linkIndex] = { ...links[linkIndex], url, description };
       return links[linkIndex];
     },
     deleteLink: (parent, args) => {
       const { id } = args;
       const linkIndex = findLinkIndex(links, id);
-      if (linkIndex === -1) return;
+      if (!linkIndex) return;
       return links.splice(linkIndex, 1)[0];
     },
   },
