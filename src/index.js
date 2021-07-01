@@ -32,12 +32,13 @@ const resolvers = {
       return link;
     },
 
-    // deleteLink: (parent, args) => {
-    // const { id } = args;
-    // const linkIndex = findLinkIndex(links, id);
-    // if (!linkIndex) return;
-    // return links.splice(linkIndex, 1)[0];
-    // },
+    deleteLink: async (parent, args, context) => {
+      const { id } = args;
+      const deletedLink = await context.prisma.link.deleteMany({
+        where: { id: parseInt(id, 10) },
+      });
+      return deletedLink;
+    },
   },
 };
 
