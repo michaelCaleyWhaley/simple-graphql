@@ -3,12 +3,6 @@ const { PrismaClient } = require("@prisma/client");
 const fs = require("fs");
 const path = require("path");
 
-const findLinkIndex = (links, argId) => {
-  const index = links.findIndex((link) => link.id === argId);
-  if (index === -1) return false;
-  return index;
-};
-
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
@@ -29,19 +23,21 @@ const resolvers = {
       });
       return link;
     },
-    updateLink: (parent, args) => {
+    updateLink: async (parent, args, context) => {
       const { id, description, url } = args;
-      const linkIndex = findLinkIndex(links, id);
-      if (!linkIndex) return;
-      links[linkIndex] = { ...links[linkIndex], url, description };
-      return links[linkIndex];
+      const link = await context.prisma.link.update({
+        where: { id: parseInt(id, 10) },
+        data: { description, url },
+      });
+      return link;
     },
-    deleteLink: (parent, args) => {
-      const { id } = args;
-      const linkIndex = findLinkIndex(links, id);
-      if (!linkIndex) return;
-      return links.splice(linkIndex, 1)[0];
-    },
+
+    // deleteLink: (parent, args) => {
+    // const { id } = args;
+    // const linkIndex = findLinkIndex(links, id);
+    // if (!linkIndex) return;
+    // return links.splice(linkIndex, 1)[0];
+    // },
   },
 };
 
